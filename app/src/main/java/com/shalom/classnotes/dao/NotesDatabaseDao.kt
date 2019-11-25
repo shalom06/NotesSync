@@ -20,7 +20,7 @@ interface NotesDatabaseDao {
     @Query("DELETE FROM notes")
     fun deleteAllNotes()
 
-    @Query("SELECT * FROM notes")
+    @Query("SELECT * FROM notes ")
     fun getAllNotes(): LiveData<List <Note>>
 
 
