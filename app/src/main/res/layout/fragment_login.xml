@@ -18,33 +18,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:textSize="50sp"
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textStyle="bold"
         android:text="@string/enter_your_user_id_and_password" />
 
 
     <EditText
-        android:layout_marginTop="40dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title"
-        android:id="@+id/username"
+        android:id="@+id/studentId"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
         android:hint="@string/username_hint"
-        android:inputType="text" />
-
-    <EditText
-        android:layout_marginTop="40dp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:inputType="numberDecimal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/username"
-        android:id="@+id/inPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/password_hint"
-        android:inputType="textPassword" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title" />
 
     <Button
 
@@ -53,7 +45,8 @@
         android:id="@+id/loginButton"
         android:layout_width="100dp"
         android:layout_height="50dp"
-        android:background="@drawable/gradient"
+        android:textColor="@color/white"
+        android:background="@color/colorPrimary"
         android:text="@string/login"
         android:layout_marginBottom="60dp"
         app:layout_constraintBottom_toBottomOf="parent" />
