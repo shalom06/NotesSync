@@ -9,10 +9,10 @@ interface NotesDatabaseDao {
 
 
     @Insert
-    fun insert(note: Note)
+    fun insertNote(note: Note)
 
     @Update
-    fun update(note: Note)
+    fun updateNote(note: Note)
 
     @Delete
     fun delete(note: Note)
@@ -21,7 +21,7 @@ interface NotesDatabaseDao {
     fun deleteAllNotes()
 
     @Query("SELECT * FROM notes")
-    fun getAllNotes(): LiveData<List<Note>>
+    fun getAllNotes(): LiveData<List <Note>>
 
 
 }
