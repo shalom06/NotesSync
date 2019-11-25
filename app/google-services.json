@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "374538720381",
+    "firebase_url": "https://classnotesapp-3e95f.firebaseio.com",
+    "project_id": "classnotesapp-3e95f",
+    "storage_bucket": "classnotesapp-3e95f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:374538720381:android:15c54115427a2a2b5acd14",
+        "android_client_info": {
+          "package_name": "com.shalom.classnotes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "374538720381-sn24g6mhavuij4suait1pbod6ao8pl4m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCW6Nugqi8C-CQ4gpqxFSQ-0LO7XP3r-Kw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "374538720381-sn24g6mhavuij4suait1pbod6ao8pl4m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
