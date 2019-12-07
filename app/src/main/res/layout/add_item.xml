@@ -1,0 +1,44 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <EditText
+        style="@style/Widget.AppCompat.EditText"
+        android:id="@+id/noteTitleEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/note_name"
+        tools:text="Android Lec 1"
+        android:inputType="text"/>
+
+    <EditText
+        android:layout_marginTop="20dp"
+        style="@style/Widget.AppCompat.EditText"
+        android:id="@+id/noteDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="Taught about recycler views and also assignment 3 "
+        android:hint="@string/note_description"
+        android:inputType="textMultiLine"/>
+
+    <EditText
+        android:layout_marginTop="20dp"
+        style="@style/Widget.AppCompat.EditText"
+        android:id="@+id/noteClass"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/note_class"
+        tools:text="CS855"
+        android:inputType="textMultiLine"/>
+
+    <Spinner
+        android:layout_marginTop="20dp"
+        android:id="@+id/colorSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:entries="@array/color_list"
+        android:prompt="@string/choose_color" />
+</LinearLayout>

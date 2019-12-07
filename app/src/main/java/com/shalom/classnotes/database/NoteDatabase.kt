@@ -1,13 +1,15 @@
 package com.shalom.classnotes.database
 
 import android.content.Context
-import android.os.AsyncTask
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.shalom.classnotes.dao.NotesDatabaseDao
 import com.shalom.classnotes.models.Note
+import com.shalom.classnotes.models.Student
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 @Database(entities = [Note::class], version = 1)
 abstract class NoteDatabase : RoomDatabase() {
@@ -42,17 +44,19 @@ abstract class NoteDatabase : RoomDatabase() {
         private val roomCallback = object : RoomDatabase.Callback() {
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)
-                PopulateDbAsyncTask(instance)
-                    .execute()
+                loadSampleData(instance)
+            }
+        }
+
+        fun loadSampleData(db: NoteDatabase?) {
+            val noteDao = db?.noteDao()
+            GlobalScope.launch {
+//                noteDao?.insertNote(Note(null, "description 1"))
+//                noteDao?.insertNote(Note(null, "description 2"))
+//                noteDao?.insertNote(Note(null, "description 3"))
             }
         }
     }
 
-    class PopulateDbAsyncTask(db: NoteDatabase?) : AsyncTask<Unit, Unit, Unit>() {
-        private val noteDao = db?.noteDao()
-
-        override fun doInBackground(vararg p0: Unit?) {
-        }
-    }
 
 }

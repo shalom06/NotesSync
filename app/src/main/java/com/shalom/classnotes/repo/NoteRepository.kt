@@ -1,35 +1,38 @@
 package com.shalom.classnotes.repo
 
 import android.app.Application
-import androidx.lifecycle.LiveData
+import androidx.lifecycle.*
+import com.google.android.gms.common.api.internal.LifecycleActivity
 import com.shalom.classnotes.dao.NotesDatabaseDao
 import com.shalom.classnotes.database.NoteDatabase
 import com.shalom.classnotes.models.Note
+import com.shalom.classnotes.models.Student
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class NoteRepository(application: Application) {
+class NoteRepository(application: Application): LifecycleOwner {
+
 
     private var noteDao: NotesDatabaseDao
 
-    private lateinit var allNotes: LiveData<List<Note>>
+    private var allNotes: LiveData<List<Note>>
+
 
     init {
         val database: NoteDatabase = NoteDatabase.getInstance(
             application.applicationContext
         )!!
         noteDao = database.noteDao()
-        GlobalScope.launch { allNotes = noteDao.getAllNotes() }
+        allNotes = noteDao.getAllNotes()
 
     }
 
     fun insert(note: Note) {
-        val insertNoteAsyncTask =
-            GlobalScope.launch {
-                noteDao.insertNote(
-                    note
-                )
-            }
+        GlobalScope.launch {
+            val insert = noteDao.insertNote(
+                note
+            )
+        }
     }
 
     fun update(note: Note) {
@@ -53,6 +56,23 @@ class NoteRepository(application: Application) {
 
     fun getAllNotes(): LiveData<List<Note>> {
         return allNotes
+    }
+
+    fun loadSyncedDataToRoomDatabase(student: Student) {
+
+        student.notes.map { note ->
+
+            note.id = null
+            GlobalScope.launch {
+                noteDao.insertNote(note)
+            }
+        }
+
+
+    }
+
+    override fun getLifecycle(): Lifecycle {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
 

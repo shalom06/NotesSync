@@ -2,19 +2,19 @@ package com.shalom.classnotes.login
 
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
-import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.auth.FirebaseAuth
+import com.shalom.classnotes.MainActivity
 import com.shalom.classnotes.R
-import com.shalom.classnotes.models.Note
 import kotlinx.android.synthetic.main.fragment_login.*
 
 
 class LoginDialogFragment : DialogFragment() {
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,30 +28,94 @@ class LoginDialogFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         loginButton.setOnClickListener {
-            val firebaseDb = FirebaseFirestore.getInstance()
-            val users: CollectionReference = firebaseDb.collection("users")
+           checkLogin()
 
-            users.document("320455455").set(Note("200455455", "test", "sgs"))
-            this.dismiss()
         }
+        registerText.setOnClickListener {
+            changeUiToRegister()
+
+
+        }
+        registerButton.setOnClickListener {
+            registerUser()
+        }
+    }
+
+    private fun registerUser() {
+        val fb = FirebaseAuth.getInstance()
+        fb.createUserWithEmailAndPassword(emailId.text.toString(), password.text.toString())
+            .addOnCompleteListener(activity as MainActivity) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+//                    updateUI(user)
+                    Toast.makeText(
+                        activity as MainActivity, "Registration Successful.",
+                        Toast.LENGTH_SHORT
+
+                    ).show()
+                    resetToLoginSate()
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Toast.makeText(
+                        activity as MainActivity,
+                        "Authentication failed. Please Check Id and Password . ",
+                        Toast.LENGTH_LONG
+                    ).show()
+//                    updateUI(null)
+                }
+
+
+            }
+    }
+
+    private fun resetToLoginSate() {
+        loginButton.visibility=View.VISIBLE
+        registerButton.visibility=View.GONE
+        registerText.visibility=View.GONE
+    }
+
+    private fun changeUiToRegister() {
+        loginButton.visibility=View.GONE
+        registerButton.visibility=View.VISIBLE
+        registerText.visibility=View.GONE
+    }
+
+    private fun checkLogin() {
+        val fb = FirebaseAuth.getInstance()
+        fb.signInWithEmailAndPassword(emailId.text.toString(), password.text.toString())
+            .addOnCompleteListener(activity as MainActivity) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+//                    updateUI(user)
+                    Toast.makeText(
+                        activity as MainActivity, "Authentication Successful.",
+                        Toast.LENGTH_SHORT
+
+                    ).show()
+
+                    (activity as MainActivity).checkIfUserExistsInFirebaseDatabase(emailId.text.toString()) { this.dismiss() }
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Toast.makeText(
+                        activity as MainActivity,
+                        "Authentication failed. Please Check Id and Password . ",
+                        Toast.LENGTH_LONG
+                    ).show()
+//                    updateUI(null)
+                }
+
+
+            }
 
     }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d("Hey", "onCreate")
-        var setFullScreen = true
-        if (arguments != null) {
-            setFullScreen = requireNotNull(arguments?.getBoolean("fullScreen"))
-        }
-        if (setFullScreen)
-            setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Black_NoTitleBar_Fullscreen)
+
+        setStyle(STYLE_NORMAL, android.R.style.Theme_DeviceDefault_Light_NoActionBar_Fullscreen)
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-    }
 
     interface DialogListener {
         fun onFinishEditDialog(inputText: String)

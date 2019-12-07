@@ -4,9 +4,26 @@
     <string name="username_hint">Student Id</string>
     <string name="password_hint">Password</string>
     <string name="login">Login</string>
-    <string name="enter_your_user_id_and_password">Enter your Student Id</string>
+    <string name="enter_your_user_id_and_password">Enter your Email Id and Password </string>
     <string name="cs_855">CS 855</string>
     <string name="note_title">Title</string>
     <string name="_06_12_2019">06/12/2019</string>
     <string name="add_note">Add Note</string>
+    <string name="note_name">Note Name</string>
+    <string name="note_description">Note Description</string>
+    <string name="class_number">class Number</string>
+    <string name="enter_your_name">Enter your Name</string>
+    <string name="email_id">Email Id</string>
+    <string name="password">Password</string>
+    <string name="click_here_to_register_a_new_account">Click here to register a new account</string>
+    <string name="resgister">Register</string>
+    <string name="note_class">Note Class</string>
+    <string name="choose_color">Choose Color</string>
+    <string-array name="color_list">
+        <item>Red</item>
+        <item>Green</item>
+        <item>Yellow</item>
+        <item>Blue</item>
+
+    </string-array>
 </resources>

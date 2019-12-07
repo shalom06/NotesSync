@@ -8,7 +8,8 @@ class Student() : Parcelable {
 
     var id: String = ""
     var name: String = ""
-    var notes: MutableList<Note> = mutableListOf()
+    var notes: List<Note> = listOf()
+
 
     constructor(parcel: Parcel) : this() {
         id = parcel.readString().toString()
@@ -33,6 +34,6 @@ class Student() : Parcelable {
             return arrayOfNulls(size)
         }
 
-        const val NOTES = "Notes"
+        const val NOTES = "NOTES"
     }
 }
