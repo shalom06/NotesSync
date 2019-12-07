@@ -24,6 +24,7 @@
         <item>Green</item>
         <item>Yellow</item>
         <item>Blue</item>
+        <item>No Color</item>
 
     </string-array>
 </resources>

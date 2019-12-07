@@ -36,6 +36,7 @@ class AddItemActivity : AppCompatActivity() {
         } else {
             title = "Add Note"
             editNoteMode = false
+            colorSpinner.setSelection(4)
         }
     }
 
@@ -43,6 +44,7 @@ class AddItemActivity : AppCompatActivity() {
         noteTitleEditText.setText(note.noteName)
         noteClass.setText(note.className)
         noteDescription.setText(note.noteDetail)
+        colorSpinner.setSelection(note.color)
 
     }
 
@@ -69,6 +71,7 @@ class AddItemActivity : AppCompatActivity() {
             this.noteDetail = noteDescription.text.toString()
             this.className = noteClass.text.toString()
             if (editNoteMode) this.id = note.id
+            this.color=colorSpinner.selectedItemPosition
 
         }
         if (editNoteMode) noteViewModel.update(note)
@@ -77,4 +80,6 @@ class AddItemActivity : AppCompatActivity() {
 
         finish()
     }
+
+
 }

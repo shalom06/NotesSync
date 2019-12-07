@@ -51,8 +51,10 @@ class MainActivity : AppCompatActivity(), ClassNoteAdapter.OnItemClickListener {
 
         noteViewModel = ViewModelProviders.of(this).get(NoteViewModel::class.java)
 
-        notesAdapter = ClassNoteAdapter()
-        notesAdapter.setOnItemClickListener(this)
+        notesAdapter = ClassNoteAdapter(this).apply {
+            this.setOnItemClickListener(this@MainActivity)
+
+        }
 
         notesRecycler.apply {
             adapter = notesAdapter

@@ -1,9 +1,11 @@
 package com.mogalabs.tagnotes.adapters
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -11,7 +13,8 @@ import com.shalom.classnotes.R
 import com.shalom.classnotes.models.Note
 import kotlinx.android.synthetic.main.listem_note.view.*
 
-class ClassNoteAdapter : ListAdapter<Note, ClassNoteAdapter.NoteViewHolder>(DIFF_CALLBACK) {
+class ClassNoteAdapter(val context: Context) :
+    ListAdapter<Note, ClassNoteAdapter.NoteViewHolder>(DIFF_CALLBACK) {
 
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Note>() {
@@ -40,6 +43,7 @@ class ClassNoteAdapter : ListAdapter<Note, ClassNoteAdapter.NoteViewHolder>(DIFF
         holder.noteTile.text = currentNote.noteName
         holder.noteDate.text = currentNote.date
         holder.className.text = currentNote.className
+        holder.background.setCardBackgroundColor(context.getColor(R.color._light_green))
     }
 
     fun getNoteAt(position: Int): Note {
@@ -57,6 +61,7 @@ class ClassNoteAdapter : ListAdapter<Note, ClassNoteAdapter.NoteViewHolder>(DIFF
         var noteTile: TextView = itemView.noteTitle
         var noteDate: TextView = itemView.noteDate
         var className: TextView = itemView.className
+        val background: CardView = itemView.noteCard
     }
 
     interface OnItemClickListener {
