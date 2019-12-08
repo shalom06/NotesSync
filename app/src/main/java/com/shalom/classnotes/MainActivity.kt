@@ -1,16 +1,21 @@
 package com.shalom.classnotes
 
+import SwipeToDeleteCallback
 import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
+import android.view.Window
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
@@ -22,6 +27,7 @@ import com.shalom.classnotes.models.Student
 import com.shalom.classnotes.viewmodels.NoteViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
+
 
 class MainActivity : AppCompatActivity(), ClassNoteAdapter.OnItemClickListener {
 
@@ -38,11 +44,11 @@ class MainActivity : AppCompatActivity(), ClassNoteAdapter.OnItemClickListener {
     private lateinit var noteViewModel: NoteViewModel
     private lateinit var notesAdapter: ClassNoteAdapter
     lateinit var sharedPreferences: SharedPreferences
-    private lateinit var studentName: String
-    private lateinit var id: String
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setupStatusBarGradient()
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         sharedPreferences = getSharedPreferences(PREF_NAME, PRIVATE_MODE)
@@ -60,6 +66,15 @@ class MainActivity : AppCompatActivity(), ClassNoteAdapter.OnItemClickListener {
             adapter = notesAdapter
             layoutManager = LinearLayoutManager(applicationContext)
         }
+        val swipeHandler = object : SwipeToDeleteCallback(this) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val noteToDelete=notesAdapter.getNoteAt(viewHolder.adapterPosition)
+                noteViewModel.delete(noteToDelete)
+            }
+
+        }
+        val itemTouchHelper = ItemTouchHelper(swipeHandler)
+        itemTouchHelper.attachToRecyclerView(notesRecycler)
 
         fab.setOnClickListener { view ->
             //            noteViewModel.getAllNotes().value?.get(0)?.let { noteViewModel.delete(it) }
@@ -102,21 +117,14 @@ class MainActivity : AppCompatActivity(), ClassNoteAdapter.OnItemClickListener {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
+    private fun setupStatusBarGradient() {
+        val window: Window = window
+        val background: Drawable = ContextCompat.getDrawable(this, R.drawable.gradient)!!
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        window.statusBarColor = resources.getColor(android.R.color.transparent)
+        window.setBackgroundDrawable(background)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
 
     fun checkIfUserExistsInFirebaseDatabase(
         id: String,
@@ -169,7 +177,7 @@ class MainActivity : AppCompatActivity(), ClassNoteAdapter.OnItemClickListener {
     override fun onItemClick(note: Note) {
         startActivity(
 
-            Intent(this, AddItemActivity::class.java).putExtra(NOTE,note)
+            Intent(this, AddItemActivity::class.java).putExtra(NOTE, note)
 
         )
     }

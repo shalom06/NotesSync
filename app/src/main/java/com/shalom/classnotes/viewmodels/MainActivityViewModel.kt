@@ -35,4 +35,5 @@ class NoteViewModel(application: Application) : AndroidViewModel(application) {
     fun syncFireBaseToLocal(student: Student) {
           repository.loadSyncedDataToRoomDatabase(student)
     }
+
 }

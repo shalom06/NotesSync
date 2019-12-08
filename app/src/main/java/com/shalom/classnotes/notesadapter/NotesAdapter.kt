@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -43,7 +44,18 @@ class ClassNoteAdapter(val context: Context) :
         holder.noteTile.text = currentNote.noteName
         holder.noteDate.text = currentNote.date
         holder.className.text = currentNote.className
-        holder.background.setCardBackgroundColor(context.getColor(R.color._light_green))
+        holder.background.setCardBackgroundColor(getColorForNote(currentNote.color))
+
+    }
+
+    private fun getColorForNote(color: Int): Int {
+        return when (color) {
+            0 -> ContextCompat.getColor(context, R.color.indian_red)
+            1 -> ContextCompat.getColor(context, R.color._light_green)
+            2 -> ContextCompat.getColor(context, R.color.light_yellow)
+            3 -> ContextCompat.getColor(context, R.color.light_blue)
+            else -> return ContextCompat.getColor(context, R.color.light_grey)
+        }
     }
 
     fun getNoteAt(position: Int): Note {
@@ -71,4 +83,10 @@ class ClassNoteAdapter(val context: Context) :
     fun setOnItemClickListener(listener: OnItemClickListener) {
         this.listener = listener
     }
+
+    fun removeItem(postion:Int){
+
+    }
+
+
 }

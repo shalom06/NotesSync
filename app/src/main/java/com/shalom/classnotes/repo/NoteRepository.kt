@@ -1,17 +1,19 @@
 package com.shalom.classnotes.repo
 
 import android.app.Application
-import androidx.lifecycle.*
-import com.google.android.gms.common.api.internal.LifecycleActivity
+import androidx.lifecycle.LiveData
 import com.shalom.classnotes.dao.NotesDatabaseDao
 import com.shalom.classnotes.database.NoteDatabase
 import com.shalom.classnotes.models.Note
 import com.shalom.classnotes.models.Student
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
-class NoteRepository(application: Application): LifecycleOwner {
-
+class NoteRepository(application: Application) : CoroutineScope {
+    private val job = Job()
 
     private var noteDao: NotesDatabaseDao
 
@@ -28,28 +30,28 @@ class NoteRepository(application: Application): LifecycleOwner {
     }
 
     fun insert(note: Note) {
-        GlobalScope.launch {
-            val insert = noteDao.insertNote(
+        this.launch {
+            noteDao.insertNote(
                 note
             )
         }
     }
 
     fun update(note: Note) {
-        GlobalScope.launch {
+        this.launch {
             noteDao.updateNote(note)
         }
     }
 
 
     fun delete(note: Note) {
-        GlobalScope.launch {
+        this.launch {
             noteDao.delete(note)
         }
     }
 
     fun deleteAllNotes() {
-        GlobalScope.launch {
+        this.launch {
             noteDao.deleteAllNotes()
         }
     }
@@ -63,7 +65,7 @@ class NoteRepository(application: Application): LifecycleOwner {
         student.notes.map { note ->
 
             note.id = null
-            GlobalScope.launch {
+            this.launch {
                 noteDao.insertNote(note)
             }
         }
@@ -71,9 +73,8 @@ class NoteRepository(application: Application): LifecycleOwner {
 
     }
 
-    override fun getLifecycle(): Lifecycle {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override val coroutineContext: CoroutineContext
+        get() = job + Dispatchers.Default
 
 
 }
