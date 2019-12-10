@@ -58,7 +58,8 @@ class LoginDialogFragment : DialogFragment() {
                     // If sign in fails, display a message to the user.
                     Toast.makeText(
                         activity as MainActivity,
-                        "Authentication failed. Please Check Id and Password . ",
+                        "Registration failed." +
+                                "\n Please use valid Email Id or password more than 6 characters ",
                         Toast.LENGTH_LONG
                     ).show()
 //                    updateUI(null)
@@ -71,7 +72,7 @@ class LoginDialogFragment : DialogFragment() {
     private fun resetToLoginSate() {
         loginButton.visibility=View.VISIBLE
         registerButton.visibility=View.GONE
-        registerText.visibility=View.GONE
+        registerText.visibility=View.VISIBLE
     }
 
     private fun changeUiToRegister() {

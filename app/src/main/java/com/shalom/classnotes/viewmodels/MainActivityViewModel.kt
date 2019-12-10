@@ -33,7 +33,13 @@ class NoteViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun syncFireBaseToLocal(student: Student) {
-          repository.loadSyncedDataToRoomDatabase(student)
+        repository.loadSyncedDataToRoomDatabase(student)
     }
+
+    fun getNoOfNotes():String{
+        return allNotes.value?.size.toString()
+    }
+
+
 
 }

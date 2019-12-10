@@ -19,6 +19,7 @@
     <string name="resgister">Register</string>
     <string name="note_class">Note Class</string>
     <string name="choose_color">Choose Color</string>
+    <string name="notes_sync">Notes Sync</string>
     <string-array name="color_list">
         <item>Red</item>
         <item>Green</item>

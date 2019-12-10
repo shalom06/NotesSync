@@ -84,9 +84,7 @@ class ClassNoteAdapter(val context: Context) :
         this.listener = listener
     }
 
-    fun removeItem(postion:Int){
 
-    }
 
 
 }

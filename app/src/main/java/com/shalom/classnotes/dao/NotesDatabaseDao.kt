@@ -23,5 +23,6 @@ interface NotesDatabaseDao {
     @Query("SELECT * FROM notes")
     fun getAllNotes(): LiveData<List<Note>>
 
-
+    @Query("SELECT * FROM notes WHERE noteName LIKE :search")
+    fun searchNotes(search: String): LiveData<List<Note>>
 }

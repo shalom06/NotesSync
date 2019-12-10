@@ -11,6 +11,7 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -21,12 +22,15 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mogalabs.tagnotes.adapters.ClassNoteAdapter
 import com.shalom.classnotes.AddItemActivity.Companion.ITEM
+import com.shalom.classnotes.databinding.ActivityMainBinding
 import com.shalom.classnotes.login.LoginDialogFragment
 import com.shalom.classnotes.models.Note
 import com.shalom.classnotes.models.Student
 import com.shalom.classnotes.viewmodels.NoteViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig
 
 
 class MainActivity : AppCompatActivity(), ClassNoteAdapter.OnItemClickListener {
@@ -39,6 +43,7 @@ class MainActivity : AppCompatActivity(), ClassNoteAdapter.OnItemClickListener {
         const val ID = "ID"
         const val NAME = "NAME"
         const val NOTE = "NOTE"
+        const val SEEN_HINT = "SEEN_HINT"
     }
 
     private lateinit var noteViewModel: NoteViewModel
@@ -49,13 +54,17 @@ class MainActivity : AppCompatActivity(), ClassNoteAdapter.OnItemClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupStatusBarGradient()
-        setContentView(R.layout.activity_main)
+        val binding =
+            DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
         setSupportActionBar(toolbar)
         sharedPreferences = getSharedPreferences(PREF_NAME, PRIVATE_MODE)
-
-
-
         noteViewModel = ViewModelProviders.of(this).get(NoteViewModel::class.java)
+
+        DataBindingUtil.bind<ActivityMainBinding>(binding.root).apply {
+            this?.lifecycleOwner = this@MainActivity
+            this?.vm = noteViewModel
+        }
+
 
         notesAdapter = ClassNoteAdapter(this).apply {
             this.setOnItemClickListener(this@MainActivity)
@@ -68,11 +77,13 @@ class MainActivity : AppCompatActivity(), ClassNoteAdapter.OnItemClickListener {
         }
         val swipeHandler = object : SwipeToDeleteCallback(this) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val noteToDelete=notesAdapter.getNoteAt(viewHolder.adapterPosition)
+                val noteToDelete = notesAdapter.getNoteAt(viewHolder.adapterPosition)
                 noteViewModel.delete(noteToDelete)
             }
 
         }
+
+
         val itemTouchHelper = ItemTouchHelper(swipeHandler)
         itemTouchHelper.attachToRecyclerView(notesRecycler)
 
@@ -102,6 +113,7 @@ class MainActivity : AppCompatActivity(), ClassNoteAdapter.OnItemClickListener {
 
         noteViewModel.getAllNotes().observe(this, Observer<List<Note>> {
             notesAdapter.submitList(it)
+            binding.invalidateAll()
         })
 
         val fragmentTransaction = supportFragmentManager.beginTransaction()
@@ -136,18 +148,21 @@ class MainActivity : AppCompatActivity(), ClassNoteAdapter.OnItemClickListener {
             if (it.data != null) {
                 saveValuesToSharedRepo(id)
 
-                showSnackBar("We got them Synced")
+                showSnackBar("Welcome Back we got your notes back!")
                 val student = it.toObject(Student::class.java)
                 student?.let { studentExists -> noteViewModel.syncFireBaseToLocal(studentExists) }
                 onComplete.invoke()
+                showHints()
             } else {
                 saveValuesToSharedRepo(id)
                 showSnackBar("Looks like we do not have any data to sync!")
                 onComplete.invoke()
+                showHints()
             }
         }.addOnFailureListener {
             saveValuesToSharedRepo(id)
             onComplete.invoke()
+            showHints()
         }
 
     }
@@ -180,5 +195,39 @@ class MainActivity : AppCompatActivity(), ClassNoteAdapter.OnItemClickListener {
             Intent(this, AddItemActivity::class.java).putExtra(NOTE, note)
 
         )
+    }
+
+    private fun showHints() {
+        if (sharedPreferences.getBoolean(SEEN_HINT, false)) {
+            return
+        }
+        val config = ShowcaseConfig()
+        config.delay = 500 // half second between each showcase view
+
+
+        val sequence = MaterialShowcaseSequence(this, "test")
+
+        sequence.setConfig(config)
+
+        sequence.addSequenceItem(
+            fab,
+            "Sync your Notes online so that you can get them whenever and on any device !\n" +
+                    "It will get it even if you reinstall the application", "GOT IT"
+        )
+
+        sequence.addSequenceItem(
+            addNote,
+            "Add a Note", "GOT IT"
+        )
+
+        sequence.addSequenceItem(
+            titleText,
+            "Swipe on the notes to delete them or click on them to view/edit them", "Got it"
+        )
+
+
+        sequence.start()
+
+        sharedPreferences.edit().putBoolean(SEEN_HINT, true).apply()
     }
 }
