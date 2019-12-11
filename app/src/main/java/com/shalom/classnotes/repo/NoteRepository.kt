@@ -17,6 +17,7 @@ class NoteRepository(application: Application) : CoroutineScope {
 
     private var noteDao: NotesDatabaseDao
 
+    //live data object which flows to view
     private var allNotes: LiveData<List<Note>>
 
 
@@ -29,6 +30,7 @@ class NoteRepository(application: Application) : CoroutineScope {
 
     }
 
+    //inserts note into database
     fun insert(note: Note) {
         this.launch {
             noteDao.insertNote(
@@ -37,29 +39,32 @@ class NoteRepository(application: Application) : CoroutineScope {
         }
     }
 
+    //update note into database
     fun update(note: Note) {
         this.launch {
             noteDao.updateNote(note)
         }
     }
 
-
+    //delete note  from database
     fun delete(note: Note) {
         this.launch {
             noteDao.delete(note)
         }
     }
 
+    //deletes all notes from database
     fun deleteAllNotes() {
         this.launch {
             noteDao.deleteAllNotes()
         }
     }
-
+    //gets all notes from database
     fun getAllNotes(): LiveData<List<Note>> {
         return allNotes
     }
 
+    //loads firebase data to room
     fun loadSyncedDataToRoomDatabase(student: Student) {
 
         student.notes.map { note ->
@@ -72,7 +77,7 @@ class NoteRepository(application: Application) : CoroutineScope {
 
 
     }
-
+    //defines the scope of repository and lifecycle
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Default
 

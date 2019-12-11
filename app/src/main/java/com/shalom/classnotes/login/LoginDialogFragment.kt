@@ -28,15 +28,19 @@ class LoginDialogFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         loginButton.setOnClickListener {
+            //login
            checkLogin()
+
 
         }
         registerText.setOnClickListener {
+            //changes the ui to register
             changeUiToRegister()
 
 
         }
         registerButton.setOnClickListener {
+            //resgisetrs user
             registerUser()
         }
     }
@@ -46,8 +50,7 @@ class LoginDialogFragment : DialogFragment() {
         fb.createUserWithEmailAndPassword(emailId.text.toString(), password.text.toString())
             .addOnCompleteListener(activity as MainActivity) { task ->
                 if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-//                    updateUI(user)
+                    // register success
                     Toast.makeText(
                         activity as MainActivity, "Registration Successful.",
                         Toast.LENGTH_SHORT
@@ -55,7 +58,7 @@ class LoginDialogFragment : DialogFragment() {
                     ).show()
                     resetToLoginSate()
                 } else {
-                    // If sign in fails, display a message to the user.
+                    // If register in fails
                     Toast.makeText(
                         activity as MainActivity,
                         "Registration failed." +
@@ -70,12 +73,14 @@ class LoginDialogFragment : DialogFragment() {
     }
 
     private fun resetToLoginSate() {
+        //view changes to login
         loginButton.visibility=View.VISIBLE
         registerButton.visibility=View.GONE
         registerText.visibility=View.VISIBLE
     }
 
     private fun changeUiToRegister() {
+        //view changes to register
         loginButton.visibility=View.GONE
         registerButton.visibility=View.VISIBLE
         registerText.visibility=View.GONE
@@ -86,8 +91,7 @@ class LoginDialogFragment : DialogFragment() {
         fb.signInWithEmailAndPassword(emailId.text.toString(), password.text.toString())
             .addOnCompleteListener(activity as MainActivity) { task ->
                 if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-//                    updateUI(user)
+                    // Sign in success
                     Toast.makeText(
                         activity as MainActivity, "Authentication Successful.",
                         Toast.LENGTH_SHORT
@@ -96,7 +100,7 @@ class LoginDialogFragment : DialogFragment() {
 
                     (activity as MainActivity).checkIfUserExistsInFirebaseDatabase(emailId.text.toString()) { this.dismiss() }
                 } else {
-                    // If sign in fails, display a message to the user.
+                    // If sign in fails
                     Toast.makeText(
                         activity as MainActivity,
                         "Authentication failed. Please Check Id and Password . ",
@@ -113,12 +117,10 @@ class LoginDialogFragment : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        //type of dialog fragment
         setStyle(STYLE_NORMAL, android.R.style.Theme_DeviceDefault_Light_NoActionBar_Fullscreen)
     }
 
 
-    interface DialogListener {
-        fun onFinishEditDialog(inputText: String)
-    }
+
 }

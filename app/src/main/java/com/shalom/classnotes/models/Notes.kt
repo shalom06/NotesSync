@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey
 
 import kotlinx.android.parcel.Parcelize
 
+//Defination of notes object
 @Parcelize
 @Entity(tableName = Student.NOTES)
 data class Note(

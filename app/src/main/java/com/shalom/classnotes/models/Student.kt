@@ -3,7 +3,9 @@ package com.shalom.classnotes.models
 import android.os.Parcel
 import android.os.Parcelable
 
-class Student() : Parcelable {
+//Definition of student object
+//implements parcelable so that can be passed between activities using intents
+ class Student() : Parcelable {
 
 
     var id: String = ""

@@ -21,7 +21,7 @@ abstract class NoteDatabase : RoomDatabase() {
     companion object {
         private var instance: NoteDatabase? = null
         private const val NOTES_DATABASE = "notes_database"
-
+        //initializes a singleton room database with dao
         fun getInstance(context: Context): NoteDatabase? {
             if (instance == null) {
                 synchronized(NoteDatabase::class) {

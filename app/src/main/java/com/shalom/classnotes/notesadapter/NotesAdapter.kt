@@ -1,4 +1,4 @@
-package com.mogalabs.tagnotes.adapters
+package com.shalom.classnotes.notesadapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -16,8 +16,9 @@ import kotlinx.android.synthetic.main.listem_note.view.*
 
 class ClassNoteAdapter(val context: Context) :
     ListAdapter<Note, ClassNoteAdapter.NoteViewHolder>(DIFF_CALLBACK) {
-
+    // checks if notes have been updated and changes views accordingly
     companion object {
+
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Note>() {
             override fun areItemsTheSame(oldNote: Note, newNote: Note): Boolean {
                 return oldNote.id == newNote.id
@@ -39,6 +40,8 @@ class ClassNoteAdapter(val context: Context) :
     }
 
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
+
+        //binds viewholder to view
         val currentNote: Note = getItem(position)
 
         holder.noteTile.text = currentNote.noteName
@@ -49,6 +52,7 @@ class ClassNoteAdapter(val context: Context) :
     }
 
     private fun getColorForNote(color: Int): Int {
+        //get color for
         return when (color) {
             0 -> ContextCompat.getColor(context, R.color.indian_red)
             1 -> ContextCompat.getColor(context, R.color._light_green)
@@ -63,6 +67,8 @@ class ClassNoteAdapter(val context: Context) :
     }
 
     inner class NoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+        //defines the viewholder which holds the notes and parameters which can be manipulated
         init {
             itemView.setOnClickListener {
                 listener?.onItemClick(getItem(position))
@@ -76,15 +82,15 @@ class ClassNoteAdapter(val context: Context) :
         val background: CardView = itemView.noteCard
     }
 
+    //interface to handle note click
     interface OnItemClickListener {
         fun onItemClick(note: Note)
     }
 
+    //set listener
     fun setOnItemClickListener(listener: OnItemClickListener) {
         this.listener = listener
     }
-
-
 
 
 }
