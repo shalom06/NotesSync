@@ -25,5 +25,5 @@ https://kotlinlang.org/docs/reference/coroutines-overview.html
 Room:
 https://developer.android.com/training/data-storage/room
 
-
-
+Firebase for Authentication and Database:
+https://firebase.google.com/docs
